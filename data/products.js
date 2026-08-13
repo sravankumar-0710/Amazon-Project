@@ -1,3 +1,5 @@
+import { formatCurrency } from "../scripts/utils/money.js";
+
 export function getProduct(productId){
   
     let matchingProduct;
@@ -9,7 +11,60 @@ export function getProduct(productId){
     });
     return matchingProduct; 
 }
-export const products = [
+
+class Product{
+  id;
+  image;
+  name;
+  rating;
+  priceCents;
+  constructor(productDetails){
+    this.id=productDetails.id;
+    this.image=productDetails.image;
+    this.name=productDetails.name;
+    this.rating=productDetails.rating;
+    this.priceCents=productDetails.priceCents;
+  }
+
+  
+
+  getStarsUrl(){
+    return `images/ratings/rating-${this.rating.stars *10}.png`
+  }
+  getPrice(){
+    return `$${formatCurrency(this.priceCents)}`
+  }
+
+  extraInfoHTML(){
+    return '';
+  }
+
+}
+class Clothing extends Product {
+  
+  sizeChartLink;
+
+  constructor(productDetails){
+    super(productDetails);
+    this.sizeChartLink=productDetails.sizeChartLink; 
+  }
+  
+  extraInfoHTML(){
+    return `<a href="${this.sizeChartLink}" target="_blank">Size Chart</a>`;
+  }
+
+}
+
+
+// const date = new Date()
+// console.log(date);
+// console.log(date.toLocaleTimeString());
+
+
+
+ 
+
+export const products = [ 
   {
     id: "e43638ce-6aa0-4b85-b27f-e1d07eb678c6",
     image: "images/products/athletic-cotton-socks-6-pairs.jpg",
@@ -688,4 +743,9 @@ export const products = [
     },
     priceCents: 2999
   },
-];
+].map((productDetails)=>{
+  if(productDetails.type==='clothing'){
+    return new Clothing(productDetails);
+  }
+  return new Product(productDetails);
+});

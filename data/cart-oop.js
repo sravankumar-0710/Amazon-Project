@@ -88,8 +88,8 @@ function Cart(localStorageKey){
     return cart;
 }
 
-const cart=Cart('cart-oop'); 
-const businessCart=Cart('cart-busi ness'); 
+const cart=Cart(); 
+const businessCart=Cart(); 
 cart.loadFromStorage();
 
 
